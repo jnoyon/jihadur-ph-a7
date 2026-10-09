@@ -49,10 +49,10 @@ export default function Navbar() {
         </div>
       </div>
       <nav className="container mx-auto">
-        <ul className="flex gap-6 py-5">
+        <ul className="flex gap-6 py-5 overflow-scroll">
           {categories.map((category) => (
             <li key={category.id}>
-              <Link href={category.slug}>
+              <Link href={`/category/${category.slug}`}>
                 {" "}
                 {category.icon} {category.nameBn}
               </Link>
@@ -60,6 +60,7 @@ export default function Navbar() {
           ))}
         </ul>
       </nav>
+      {/* <ScrollingProducts /> */}
     </header>
   );
 }

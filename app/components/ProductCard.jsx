@@ -19,11 +19,11 @@ export default function ProductCard({ product }) {
         <p className="bg-gray-300 rounded-xl px-2">
           {product.change.dir === "up" ? (
             <span className="flex gap-1 items-center">
-              <FaCaretUp className="text-red-600" /> {product.change.pct}
+              <FaCaretUp className="text-red-600" /> {product.change.pct}%
             </span>
           ) : (
             <span className="flex gap-1 items-center">
-              <FaCaretDown className="text-green-600" /> {product.change.pct}
+              <FaCaretDown className="text-green-600" /> {product.change.pct}%
             </span>
           )}
         </p>
