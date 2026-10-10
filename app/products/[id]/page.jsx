@@ -1,22 +1,45 @@
+import { Suspense } from "react";
+import { cacheLife } from "next/cache";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+
 import baseUrl from "@/app/api/baseUrl";
 import toBangla from "@/app/utility/toBangla";
 import toBanglaUnit from "@/app/utility/toBanglaUnit";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import Loading from "@/app/components/loading";
+
+// Fetch and cache product data
+async function getProduct(id) {
+  "use cache";
+
+  cacheLife("minutes");
+
+  const res = await fetch(`${baseUrl}/products/${id}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch product details");
+  }
+
+  return res.json();
+}
+
+// Dynamic metadata
 export async function generateMetadata({ params }) {
   const { id } = await params;
 
-  const res = await fetch(`${baseUrl}/products/${id}`);
-  const data = await res.json();
+  const data = await getProduct(id);
 
   return {
     title: `${data.nameBn} এর দাম`,
     description: `${data.nameBn} এর বর্তমান বাজারদর জানুন।`,
   };
 }
-export default async function ProductDetailsPage({ params }) {
+
+// Product details content
+async function ProductDetailsContent({ params }) {
   const { id } = await params;
-  const res = await fetch(`${baseUrl}/products/${id}`);
-  const data = await res.json();
+
+  const data = await getProduct(id);
+
   const highestPrice = Math.max(...data.markets.map((market) => market.max));
 
   const lowestPrice = Math.min(...data.markets.map((market) => market.min));
@@ -35,110 +58,141 @@ export default async function ProductDetailsPage({ params }) {
           <span className="text-5xl p-3 rounded-xl bg-gray-200">
             {data.image}
           </span>
+
           <div>
-            <span className="text-3xl font-bold">{data.nameBn}</span> <br />
+            <span className="text-3xl font-bold">{data.nameBn}</span>
+
+            <br />
+
             <span className="text-gray-600">
-              {" "}
               প্রতি {toBanglaUnit(data.unit)} {data.nameBn}
             </span>
+
             <div className="flex gap-1">
               গতকালের তুলনায় আজ দাম
               {data.change.dir === "up" ? (
                 <p>
-                  {" "}
-                  <b> বেড়েছে </b> {data.today - data.yesterday} টাকা{" "}
+                  <b>বেড়েছে</b> {toBangla(data.today - data.yesterday)} টাকা
                 </p>
               ) : (
                 <p>
-                  {" "}
-                  <b> কমেছে </b> {data.yesterday - data.today} টাকা{" "}
+                  <b>কমেছে</b> {toBangla(data.yesterday - data.today)} টাকা
                 </p>
               )}
             </div>
           </div>
         </div>
+
         <div className="bg-gray-200 p-3 rounded-xl">
-          <p> আজকের দাম </p>
-          <h1 className="text-4xl font-bold"> {toBangla(data.today)} </h1>
-          <p> টাকা / {toBanglaUnit(data.unit)} </p>
+          <p>আজকের দাম</p>
+
+          <h1 className="text-4xl font-bold">{toBangla(data.today)}</h1>
+
+          <p>টাকা / {toBanglaUnit(data.unit)}</p>
+
           <span>
             {data.change.dir === "up" ? (
               <span className="flex gap-1 items-center">
-                <FaCaretUp className="text-red-600" />{" "}
+                <FaCaretUp className="text-red-600" />
                 {toBangla(data.change.pct)}%
               </span>
             ) : (
               <span className="flex gap-1 items-center">
-                <FaCaretDown className="text-green-600" />{" "}
+                <FaCaretDown className="text-green-600" />
                 {toBangla(data.change.pct)}%
               </span>
             )}
           </span>
         </div>
       </div>
+
       <div className="bg-white p-3 border border-gray-300 mt-3 rounded-md">
-        <h2 className="text-2xl font-bold mb-2"> দামের সারসংক্ষেপ </h2>
-        <div className="grid grid-cols-3 gap-2 mb-5">
+        <h2 className="text-2xl font-bold mb-2">দামের সারসংক্ষেপ</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5">
           <div className="border border-gray-300 p-3 rounded-xl">
-            <p> সর্বনিম্ন দাম </p>
+            <p>সর্বনিম্ন দাম</p>
+
             <h1 className="text-green-600">
-              {" "}
-              <span className="text-3xl font-bold ">
+              <span className="text-3xl font-bold">
                 {toBangla(lowestPrice)}
               </span>{" "}
-              টাকা{" "}
+              টাকা
             </h1>
-            <p> সবচেয়ে কম দামের বাজার </p>
+
+            <p>সবচেয়ে কম দামের বাজার</p>
           </div>
+
           <div className="border border-gray-300 p-3 rounded-xl">
-            <p> সর্বোচ্চ দাম </p>
+            <p>সর্বোচ্চ দাম</p>
+
             <h1 className="text-red-600">
-              {" "}
-              <span className="text-3xl font-bold ">
+              <span className="text-3xl font-bold">
                 {toBangla(highestPrice)}
               </span>{" "}
-              টাকা{" "}
+              টাকা
             </h1>
-            <p> সবচেয়ে বেশি দামের বাজার </p>
+
+            <p>সবচেয়ে বেশি দামের বাজার</p>
           </div>
+
           <div className="border border-gray-300 p-3 rounded-xl">
-            <p> গড় দাম </p>
+            <p>গড় দাম</p>
+
             <h1 className="text-green-600">
-              {" "}
-              <span className="text-3xl font-bold ">
+              <span className="text-3xl font-bold">
                 {toBangla(averagePrice.toFixed(2))}
               </span>{" "}
-              টাকা{" "}
+              টাকা
             </h1>
-            <p> প্রতি কেজির হিসাব </p>
+
+            <p>প্রতি বাজারের গড় হিসাব</p>
           </div>
         </div>
+
         <div className="price">
-          <h2 className="text-2xl font-bold mb-2"> বাজারভিত্তিক আজকের দাম </h2>
-          <table className="table table-zebra ">
-            <thead>
-              <tr>
-                <th>বাজার</th>
-                <th>বিভাগ</th>
-                <th>সর্বনিম্ন</th>
-                <th>সর্বাধিক</th>
-                <th>গড়</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.markets.map((item) => (
-                <tr key={item.market}>
-                  <td>{item.market}</td>
-                  <td>{item.division}</td>
-                  <td>{toBangla(item.min)}</td>
-                  <td>{toBangla(item.max)}</td>
-                  <td> {toBangla(averagePrice.toFixed(2))} </td>
+          <h2 className="text-2xl font-bold mb-2">বাজারভিত্তিক আজকের দাম</h2>
+
+          <div className="overflow-x-auto">
+            <table className="table table-zebra">
+              <thead>
+                <tr>
+                  <th>বাজার</th>
+                  <th>বিভাগ</th>
+                  <th>সর্বনিম্ন</th>
+                  <th>সর্বোচ্চ</th>
+                  <th>গড়</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {data.markets.map((item) => {
+                  const marketAverage = (item.min + item.max) / 2;
+
+                  return (
+                    <tr key={item.market}>
+                      <td>{item.market}</td>
+                      <td>{item.division}</td>
+                      <td>{toBangla(item.min)}</td>
+                      <td>{toBangla(item.max)}</td>
+                      <td>{toBangla(marketAverage.toFixed(2))}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+// Product page
+export default function ProductDetailsPage({ params }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ProductDetailsContent params={params} />
+    </Suspense>
   );
 }
