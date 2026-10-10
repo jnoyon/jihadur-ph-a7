@@ -31,7 +31,7 @@ export default function ScrollingProducts() {
     return <Loading />;
   }
   return (
-    <MarqueeText direction="right" pauseOnHover={true}>
+    <MarqueeText direction="right" pauseOnHover={true} className="mb-5">
       {products.map((product) => (
         <div key={product.id} className="flex">
           {" "}

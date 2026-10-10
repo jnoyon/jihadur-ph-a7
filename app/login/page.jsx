@@ -29,12 +29,6 @@ export default function Login() {
             placeholder="কমপক্ষে ৮ অক্ষর"
           />
 
-          <label className="label">পাসওয়ার্ড নিশ্চিত করুন</label>
-          <input
-            type="password"
-            className="input w-full"
-            placeholder="আবার লিখুন"
-          />
           <button className="btn bg-green-600 text-white mt-4">
             একাউন্ট তৈরি করুন
           </button>

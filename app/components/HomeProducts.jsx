@@ -23,13 +23,13 @@ export default async function HomeProducts() {
         title="আজ দাম বেড়েছে"
         products={priceUpProducts}
         sorting={false}
-        icon={<FaCaretUp className="text-red-900" />}
+        icon={<FaCaretUp className="text-red-700" />}
       />
       <Section
         title="আজ দাম কমেছে"
         products={priceDownProducts}
         sorting={false}
-        icon={<FaCaretDown className="text-green-900" />}
+        icon={<FaCaretDown className="text-green-700" />}
       />
       <Section
         id="all"
