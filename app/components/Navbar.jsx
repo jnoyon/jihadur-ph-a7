@@ -2,22 +2,42 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import baseUrl from "../api/baseUrl";
-
+import ScrollingProducts from "./ScrollingProducts";
+import Image from "next/image";
 export default function Navbar() {
   const [categories, setCategories] = useState([]);
+
+  const [date, setDate] = useState("");
   useEffect(() => {
     fetch(`${baseUrl}/categories`)
       .then((res) => res.json())
       .then((data) => setCategories(data));
   }, []);
+
+  useEffect(() => {
+    setDate(
+      new Date().toLocaleDateString("bn-BD", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    );
+  }, []);
+
   return (
     <header className="mb-5 bg-white border-b border-gray-300">
       <div className="container mx-auto navbar">
-        <div className="flex-1">
-          <Link href="/" className="text-xl font-bold">
-            বাজার দর
-          </Link>
-          <p className="text-sm text-gray-600">মঙ্গলবার, ৬ অক্টোবর, ২০২৬</p>
+        <div className="flex items-center gap-2">
+          <div className="bg-green-400 p-4 rounded-xl">
+            <Image src="/logo-icon.png" height={10} width={10} alt="Logo" />
+          </div>
+          <div className="text">
+            <Link href="/" className="text-xl font-bold">
+              বাজার দর
+            </Link>
+            <p className="text-sm text-gray-600"> {date} </p>
+          </div>
         </div>
         <div className="flex gap-2">
           <div className="dropdown dropdown-end">
@@ -60,7 +80,7 @@ export default function Navbar() {
           ))}
         </ul>
       </nav>
-      {/* <ScrollingProducts /> */}
+      <ScrollingProducts />
     </header>
   );
 }

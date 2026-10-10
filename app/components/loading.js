@@ -1,3 +1,9 @@
+import { div } from "framer-motion/client";
+
 export default function Loading() {
-  return <span className="loading loading-bars loading-xl"></span>;
+  return (
+    <div className="flex items-center justify-center">
+      <span className="loading loading-bars loading-xl"></span>
+    </div>
+  );
 }

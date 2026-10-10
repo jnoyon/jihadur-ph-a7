@@ -1,5 +1,7 @@
 import React from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import toBangla from "../utility/toBangla";
+import toBanglaUnit from "../utility/toBanglaUnit";
 
 export default function ProductCard({ product }) {
   return (
@@ -8,22 +10,25 @@ export default function ProductCard({ product }) {
         <div className="bg-gray-200 p-2 rounded-md">{product.image}</div>
         <p>
           <b className="text-xl">{product.nameBn}</b> <br /> প্রতি{" "}
-          {product.unit}
+          {toBanglaUnit(product.unit)}
         </p>
       </div>
       <h1> আজকের দাম </h1>
       <div className="flex justify-between">
         <p>
-          <span className="text-2xl font-bold">{product.today} </span> টাকা
+          <span className="text-2xl font-bold">{toBangla(product.today)} </span>{" "}
+          টাকা
         </p>
         <p className="bg-gray-300 rounded-xl px-2">
           {product.change.dir === "up" ? (
             <span className="flex gap-1 items-center">
-              <FaCaretUp className="text-red-600" /> {product.change.pct}%
+              <FaCaretUp className="text-red-600" />{" "}
+              {toBangla(product.change.pct)}%
             </span>
           ) : (
             <span className="flex gap-1 items-center">
-              <FaCaretDown className="text-green-600" /> {product.change.pct}%
+              <FaCaretDown className="text-green-600" />{" "}
+              {toBangla(product.change.pct)}%
             </span>
           )}
         </p>

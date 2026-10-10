@@ -1,12 +1,24 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 export default function Hero() {
+  const [date, setDate] = useState("");
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("bn-BD", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    setDate(today);
+  }, []);
+
   return (
     <div className="bg-white border mb-5 border-gray-200 rounded-md flex flex-col-reverse md:flex-row justify-between p-3 md:p-5 items-center">
       <div className="md:w-1/2">
         <p className="bg-green-200 mb-2 inline-block px-5 rounded-md text-green-600">
-          {" "}
-          তারিখ{" "}
+          {date}
         </p>
         <h1 className="text-4xl font-bold mb-3"> আজকের বাজারের দাম এক নজরে </h1>
         <p className="mb-3 text-xl text-gray-600">

@@ -1,11 +1,14 @@
 import Link from "next/link";
 import baseUrl from "../../api/baseUrl";
 import Section from "../../components/Section";
+import toBangla from "../../utility/toBangla";
+import { Suspense } from "react";
+import Loading from "../../components/loading";
+
 const categoryProducts = async (categorySlug) => {
   const res = await fetch(`${baseUrl}/products?category=${categorySlug}`);
   return res.json();
 };
-categoryProducts();
 export default async function CategoryPage({ params }) {
   const { categorySlug } = await params;
   const products = await categoryProducts(categorySlug);
@@ -27,10 +30,12 @@ export default async function CategoryPage({ params }) {
         </div>
         <p>
           <b className="text-xl">{currentCategory?.categoryNameBn}</b> <br />
-          <p> {products.length} টি পণ্যের দাম ও পরিবর্তন </p>
+          <span> {toBangla(products.length)}টি পণ্যের দাম ও পরিবর্তন </span>
         </p>
       </div>
-      <Section products={products} showSorting={true}></Section>
+      <Suspense fallback={<Loading />}>
+        <Section products={products} showSorting={true} />
+      </Suspense>
     </div>
   );
 }
