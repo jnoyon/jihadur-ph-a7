@@ -48,7 +48,7 @@ function NavbarContent() {
             <ul className="flex items-center gap-2">
               <li>
                 {" "}
-                <Link href="/login" className="btn btn-success">
+                <Link href="/signin" className="btn btn-success">
                   {" "}
                   লগিন{" "}
                 </Link>{" "}

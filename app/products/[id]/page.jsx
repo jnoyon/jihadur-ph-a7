@@ -10,7 +10,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${data.nameBn} এর দাম`,
-    description: `${data.nameBn} এর বর্তমান বাজারদর, সর্বনিম্ন দাম ও সর্বোচ্চ দাম জানুন।`,
+    description: `${data.nameBn} এর বর্তমান বাজারদর জানুন।`,
   };
 }
 export default async function ProductDetailsPage({ params }) {
@@ -126,9 +126,8 @@ export default async function ProductDetailsPage({ params }) {
               </tr>
             </thead>
             <tbody>
-              {data.markets.map((item, index) => (
-                <tr key={index}>
-                  {" "}
+              {data.markets.map((item) => (
+                <tr key={item.market}>
                   <td>{item.market}</td>
                   <td>{item.division}</td>
                   <td>{toBangla(item.min)}</td>

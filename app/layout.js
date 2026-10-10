@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 
 export const metadata = {
   title: {
-    default: "বাজার দর",
+    default: "বাজার দর - আজকের বাজারের দাম",
     template: "%s | বাজার দর",
   },
   description: "বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের বাজারদর",

@@ -14,11 +14,11 @@ export default function Section({
   const [sort, setSort] = useState("default");
   const sortedProducts = [...products].sort((a, b) => {
     if (sort === "low-to-high") {
-      return Number(a.change.pct) - Number(b.change.pct);
+      return Number(a.today) - Number(b.today);
     }
 
     if (sort === "high-to-low") {
-      return Number(b.change.pct) - Number(a.change.pct);
+      return Number(b.today) - Number(a.today);
     }
 
     return 0;
