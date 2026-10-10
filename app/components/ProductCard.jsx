@@ -5,7 +5,7 @@ import toBanglaUnit from "../utility/toBanglaUnit";
 
 export default function ProductCard({ product }) {
   return (
-    <div className="bg-white p-2 rounded-md border-gray-200 border hover:border-amber-600">
+    <div className="bg-white p-2 rounded-md border-gray-200 border hover:border-green-600">
       <div className="flex items-center gap-2 mb-3">
         <div className="bg-gray-200 p-2 rounded-md">{product.image}</div>
         <p>

@@ -39,7 +39,7 @@ export default function ScrollingProducts() {
           {product.nameBn}{" "}
           <span className="text-gray-700 ml-1">
             {" "}
-            {product.today} টাকা / {toBanglaUnit(product.unit)}{" "}
+            {toBangla(product.today)} টাকা / {toBanglaUnit(product.unit)}{" "}
           </span>
           <span className="ml-2">
             {product.change.dir === "up" ? (
